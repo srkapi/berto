@@ -30,8 +30,11 @@ public class UserController {
     }
 
     @PutMapping
-    public Optional<UserDto> update(@RequestBody UserDto userDto){
-        return this.userService.update(userDto);
+    public ResponseEntity update(@RequestBody UserDto userDto){
+        Optional<UserDto> update = this.userService.update(userDto);
+        return Optional.of(update)
+                .map(it -> new ResponseEntity<>(it,HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
     @PostMapping
     public Optional<UserDto> save(@RequestBody UserDto userDto){
